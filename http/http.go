@@ -1,6 +1,7 @@
 package http
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -12,11 +13,6 @@ type Post struct {
 	ID     int    `json:"id"`
 	Title  string `json:"title"`
 	Body   string `json:"body"`
-}
-
-// Posts posts
-type Posts struct {
-	Collection []Post
 }
 
 // GetPosts get posts from jsonplaceholder
@@ -32,4 +28,25 @@ func GetPosts() ([]Post, error) {
 	}
 
 	return items, nil
+}
+
+// GetInsecureResource from p'yod machine
+func GetInsecureResource() ([]byte, error) {
+	url := "http://192.168.100.3:8080/thai"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	tlsConfig := &tls.Config{InsecureSkipVerify: true}
+	transport := &http.Transport{TLSClientConfig: tlsConfig}
+	client := &http.Client{Transport: transport}
+
+	res, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	return body, nil
 }

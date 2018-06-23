@@ -46,7 +46,7 @@ func Signup(c echo.Context) (err error) {
 		c.Error(err)
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
+	return c.JSON(http.StatusOK, map[string]string{
 		"token": token,
 	})
 }
