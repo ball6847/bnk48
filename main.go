@@ -11,13 +11,6 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-var secret *string
-
-type accesToken struct {
-	Token     string `json:"accessToken"`
-	ExpiresIn int    `json:"expiresIn"`
-}
-
 // Handler
 func hello(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
