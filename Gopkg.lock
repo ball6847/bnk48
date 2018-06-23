@@ -8,6 +8,18 @@
   version = "v3.2.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/globalsign/mgo"
+  packages = [
+    ".",
+    "bson",
+    "internal/json",
+    "internal/sasl",
+    "internal/scram"
+  ]
+  revision = "113d3961e7311526535a1ef7042196563d442761"
+
+[[projects]]
   name = "github.com/labstack/echo"
   packages = [
     ".",
@@ -69,6 +81,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f157f2f3748e00adef9f6bc27d2701bcaf37fe89e9d7506d70612584c1aef97d"
+  inputs-digest = "16ba0efff432b1e5abd2ed8766a39639cdae023aa4a7b398c971863c6bd10c01"
   solver-name = "gps-cdcl"
   solver-version = 1
