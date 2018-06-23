@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -13,9 +14,10 @@ type accesToken struct {
 	ExpiresIn int    `json:"expiresIn"`
 }
 
-type SignupPayload struct {
+type signupPayload struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
+	Email    string `json:"email"`
 }
 
 // Handler
@@ -24,10 +26,16 @@ func hello(c echo.Context) error {
 }
 
 func signup(c echo.Context) (err error) {
-	payload := new(SignupPayload)
+	payload := new(signupPayload)
 
 	if err = c.Bind(payload); err != nil {
 		c.Error(err)
+	}
+
+	if payload.Email == "" {
+		return c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"message": "Email is required",
+		})
 	}
 
 	session, err := mgo.Dial("localhost")
@@ -37,7 +45,7 @@ func signup(c echo.Context) (err error) {
 
 	collection := session.DB("odds").C("credentials")
 
-	err = collection.Insert(payload)
+	err = collection.Upsert(bson.M{"email": payload.Email}, bson.M{"$set": payload})
 	if err != nil {
 		c.Error(err)
 	}
