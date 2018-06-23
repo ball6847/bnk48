@@ -5,6 +5,8 @@ import (
 
 	flag "github.com/ball6847/bnk48/flag"
 	handler "github.com/ball6847/bnk48/handler"
+	ph "github.com/ball6847/bnk48/handler/posts"
+
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -39,6 +41,7 @@ func main() {
 	e.GET("/", hello)
 	e.POST("/signup", handler.Signup)
 	e.GET("/protected", hello, middleware.JWT([]byte(*flag.Secret)))
+	e.GET("/posts/:id", ph.Posts)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))
